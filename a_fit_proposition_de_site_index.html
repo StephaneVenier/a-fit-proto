@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A‑Fit — Bouger. Gagner. Revenir.</title>
+  <meta name="description" content="A‑Fit transforme l’entraînement en salle en jeu motivant : XP, classements, A‑Book, défis. Un portail partenaire pour les salles de sport." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      /* Palette "Pulse" — énergique, pas vue partout */
+      --bg:#0b1020;         /* indigo profond */
+      --bg-2:#0e1429;       /* panneau */
+      --ink:#ecf3ff;        /* encre claire */
+      --muted:#a9b7d6;      /* texte secondaire */
+      --accent:#49e1a8;     /* menthe électrique */
+      --accent-2:#ff6a88;   /* corail punchy */
+      --accent-3:#7a5cff;   /* violet vivant */
+      --ok:#22e58a;         /* succès */
+      --warn:#ffd166;       /* alerte douce */
+      --bad:#ff4d6d;        /* erreur */
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Manrope,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 800px at 10% -10%, rgba(73,225,168,.18), transparent 60%),
+                        radial-gradient(1000px 700px at 110% 10%, rgba(122,92,255,.16), transparent 60%),
+                        linear-gradient(180deg, #0b1020, #0e1429 38%, #0b1020 100%);
+      letter-spacing:.2px;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{opacity:.92}
+    .container{max-width:1100px; margin:0 auto; padding:24px}
+
+    /* Nav */
+    .nav{position:sticky; top:0; z-index:50; backdrop-filter:saturate(140%) blur(8px); background:linear-gradient(180deg, rgba(11,16,32,.85), rgba(11,16,32,.50)); border-bottom:1px solid rgba(118,130,168,.12)}
+    .nav .row{display:flex; align-items:center; justify-content:space-between; gap:16px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px}
+    .brand .dot{width:10px; height:10px; border-radius:999px; background:linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow:0 0 16px rgba(73,225,168,.6)}
+    .links{display:flex; gap:14px; flex-wrap:wrap}
+    .btn{padding:11px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.02); color:var(--ink); cursor:pointer}
+    .btn:hover{transform:translateY(-1px); box-shadow:var(--shadow)}
+    .btn.accent{background:linear-gradient(135deg, var(--accent), var(--accent-3)); color:#071218; border:none; font-weight:800}
+
+    /* Hero */
+    .hero{position:relative; padding:72px 0 36px}
+    .hero h1{font-size: clamp(34px, 4.5vw, 56px); line-height:1.02; margin:0 0 10px; letter-spacing:.2px}
+    .hero .lead{color:var(--muted); font-size: clamp(16px, 2.2vw, 20px)}
+    .halo{position:absolute; inset:-2px; background:radial-gradient(600px 200px at 20% 0%, rgba(73,225,168,.15), transparent 60%), radial-gradient(600px 200px at 80% 20%, rgba(255,106,136,.15), transparent 60%); z-index:-1}
+    .hero .cta{display:flex; gap:12px; margin-top:20px; flex-wrap:wrap}
+    .chip{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; background:rgba(255,255,255,.04); border:1px dashed rgba(255,255,255,.12); font-size:14px}
+
+    /* Sections */
+    section{padding:42px 0; border-top:1px solid rgba(118,130,168,.12)}
+    h2{font-size: clamp(24px, 3vw, 34px); margin:0 0 8px}
+    .sub{color:var(--muted); margin:0 0 18px}
+    .grid{display:grid; gap:16px}
+    .cols-3{grid-template-columns:repeat(3,1fr)}
+    .cols-2{grid-template-columns:repeat(2,1fr)}
+    @media (max-width:860px){.cols-3,.cols-2{grid-template-columns:1fr}}
+
+    .card{border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border-radius:var(--radius); padding:18px; box-shadow:0 8px 22px rgba(0,0,0,.24)}
+    .card h3{margin:6px 0 8px}
+    .badge{display:inline-block; font-size:12px; padding:6px 10px; border-radius:999px; background:rgba(122,92,255,.15); border:1px solid rgba(122,92,255,.35)}
+
+    /* Feature rows */
+    .feature{display:grid; grid-template-columns: 1.1fr .9fr; gap:22px; align-items:center}
+    @media (max-width:980px){.feature{grid-template-columns:1fr;}}
+    .illus{border-radius:var(--radius); background:radial-gradient(650px 240px at 70% -10%, rgba(122,92,255,.25), transparent 60%), linear-gradient(160deg, rgba(73,225,168,.10), rgba(255,106,136,.08)); border:1px solid rgba(255,255,255,.08); padding:16px}
+
+    /* Demo components */
+    .leader{width:100%; border-collapse:collapse; font-size:14px}
+    .leader th,.leader td{padding:10px 12px; border-bottom:1px dashed rgba(255,255,255,.1); text-align:left}
+    .leader tr:hover{background:rgba(255,255,255,.03)}
+    .rank{display:inline-block; min-width:26px; text-align:center; padding:4px 8px; border-radius:999px; background:rgba(73,225,168,.15); border:1px solid rgba(73,225,168,.35)}
+    .xp{font-weight:800; color:var(--accent)}
+
+    .steps{counter-reset:st}
+    .steps li{list-style:none; position:relative; padding-left:42px; margin:14px 0}
+    .steps li::before{counter-increment:st; content:counter(st); position:absolute; left:0; top:0; width:28px; height:28px; border-radius:999px; display:grid; place-items:center; font-weight:800; background:linear-gradient(135deg, var(--accent-2), var(--accent)); color:#071218; box-shadow:0 8px 20px rgba(255,106,136,.25)}
+
+    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:12px; padding:3px 7px; border-radius:6px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.15)}
+
+    /* Footer */
+    footer{padding:24px 0 60px; color:var(--muted)}
+
+    /* Micro-interactions */
+    .wiggle:hover{animation:wig .5s ease}
+    @keyframes wig{0%{transform:rotate(0)} 25%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)} 100%{transform:rotate(0)}}
+
+    /* Toggle thème (option claire expérimentale) */
+    .toggle{display:flex; align-items:center; gap:10px}
+    .switch{width:44px; height:24px; background:rgba(255,255,255,.12); border-radius:999px; position:relative; cursor:pointer}
+    .switch i{position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:999px; background:linear-gradient(135deg, var(--accent), var(--accent-3)); transition:transform .25s ease}
+    .switch.on i{transform:translateX(20px)}
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container row">
+      <div class="brand"><span class="dot"></span> A‑Fit <span class="badge">beta</span></div>
+      <div class="links">
+        <a class="btn" href="#features">Fonctionnalités</a>
+        <a class="btn" href="#classements">Classements</a>
+        <a class="btn" href="#abook">A‑Book</a>
+        <a class="btn" href="#salles">Pour les salles</a>
+        <a class="btn accent wiggle" href="#demo">Essayer la démo</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="halo"></div>
+    <div class="container">
+      <div class="feature">
+        <div>
+          <h1>Le fitness qui donne envie de <span style="background:linear-gradient(135deg,var(--accent),var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent">revenir</span>.</h1>
+          <p class="lead">A‑Fit transforme chaque séance en XP, défis et records. Un carnet A‑Book pour progresser, des classements pour se dépasser, et un portail pro pour les salles partenaires.</p>
+          <div class="cta">
+            <a class="btn accent" href="#demo">Lancer la démo</a>
+            <a class="btn" href="#salles">Devenir salle partenaire</a>
+            <span class="chip">Pas d’app à installer • Full Web</span>
+          </div>
+        </div>
+        <div class="illus">
+          <div class="card" style="margin-bottom:12px">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px">
+              <strong>Session — Biceps Curl</strong>
+              <span class="badge">No‑screen</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:16px; margin-top:8px; flex-wrap:wrap">
+              <div>
+                <div style="font-weight:800; font-size:30px">08:24</div>
+                <div style="color:var(--muted); font-size:12px">Temps écoulé</div>
+              </div>
+              <div style="flex:1"></div>
+              <button class="btn">+ Série 40 kg × 10</button>
+              <button class="btn">Lancer repos 90s</button>
+            </div>
+          </div>
+          <div class="card">
+            <strong>Leaderboard — Salle Montparnasse</strong>
+            <table class="leader" id="leader">
+              <thead><tr><th>#</th><th>Nom</th><th>Machine</th><th>Semaine</th><th>XP</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="container">
+      <h2>Tout pour motiver. Rien pour distraire.</h2>
+      <p class="sub">Scan QR → session → XP. Un suivi clair, des objectifs simples, des récompenses configurables par la salle.</p>
+      <div class="grid cols-3">
+        <div class="card">
+          <span class="badge">Preuve de présence</span>
+          <h3>QR par machine</h3>
+          <p>Un scan avant la séance. Sur machines avec écran : photo console pour valider. Sur machines libres : minuteur + séries/rép/poids.</p>
+        </div>
+        <div class="card">
+          <span class="badge">Carnet intelligent</span>
+          <h3>A‑Book</h3>
+          <p>Historique, PR, 1RM estimée, volume par séance. Notes RPE et repos guidé pour progresser sans brûler les étapes.</p>
+        </div>
+        <div class="card">
+          <span class="badge">Challenge</span>
+          <h3>Classements & défis</h3>
+          <p>Par salle, par machine, par période. Récompenses locales (boisson, coaching, réductions) configurées par la salle.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- A‑BOOK -->
+  <section id="abook">
+    <div class="container feature">
+      <div>
+        <h2>Ton A‑Book, ton progrès.</h2>
+        <p class="sub">Un carnet d’entretien qui donne envie d’y retourner : visualise ton volume, tes meilleures séries, tes vitesses, tes distances. Tout est clair, lisible, et portable.</p>
+        <ul class="steps">
+          <li>Enregistre automatiquement séries/rép/poids et temps de repos.</li>
+          <li>Estime 1RM (Epley), repère les plateaux, propose des paliers.</li>
+          <li>Synchronise avec la salle pour les défis et récompenses.</li>
+        </ul>
+      </div>
+      <div class="illus">
+        <div class="card"><strong>Dernières séances</strong>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px">
+            <div class="card" style="background:rgba(73,225,168,.08)"><div style="font-size:12px; color:var(--muted)">Presse à cuisses</div><div style="font-weight:800">5×8 @ 140 kg</div><div class="xp">+ 420 XP</div></div>
+            <div class="card" style="background:rgba(122,92,255,.08)"><div style="font-size:12px; color:var(--muted)">Rameur 2 km</div><div style="font-weight:800">7'26" @ 28 spm</div><div class="xp">+ 310 XP</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POUR LES SALLES -->
+  <section id="salles">
+    <div class="container feature">
+      <div>
+        <h2>Portail salles — simple, rentable.</h2>
+        <p class="sub">1 € / adhérent validé / mois. Validation par la salle, facturation automatisée, QR & paramètres anti‑triche en quelques clics.</p>
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>Console d’adhésions</h3>
+            <p>Valide/Refuse les demandes. Choix A‑Book seul ou participation aux défis. Export CSV.</p>
+          </div>
+          <div class="card">
+            <h3>Insights concrets</h3>
+            <p>Machines populaires, heures de pointe, progression collective. Idéal pour le coaching et le marketing local.</p>
+          </div>
+        </div>
+      </div>
+      <div class="illus">
+        <div class="card"><strong>Facturation (exemple)</strong>
+          <div style="display:flex; gap:10px; align-items:center; margin:10px 0">
+            <span class="kbd">Salle</span> Urban Gym — République
+          </div>
+          <div style="display:grid; grid-template-columns:1fr auto; gap:6px; margin:8px 0">
+            <div>Adhérents validés (oct.)</div><div><strong>182</strong></div>
+            <div>Tarif</div><div>1 € / adhérent</div>
+            <div>Total mensuel</div><div><strong>182 €</strong></div>
+          </div>
+          <button class="btn accent" style="width:100%">Devenir partenaire</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO SECTION -->
+  <section id="demo">
+    <div class="container">
+      <h2>Essayer la démo (interface web)</h2>
+      <p class="sub">Aperçu statique de l’interface. La version complète inclura scan QR, minuteurs, séries/rép/poids, photos consoles et classements en temps réel.</p>
+      <div class="grid cols-3">
+        <div class="card">
+          <h3>Scan & Session</h3>
+          <p>Scanne le QR collé sur la machine pour démarrer. Sur mobile, la caméra s’ouvre automatiquement.</p>
+          <button class="btn" onclick="alert('Scan simulé \u{1F4F7}')">Simuler un scan</button>
+        </div>
+        <div class="card">
+          <h3>Séries & Repos</h3>
+          <p>Ajoute tes séries (poids × reps). Un repos guidé s’enclenche selon l’intensité.</p>
+          <button class="btn" onclick="alert('Série 40 kg × 10 ajoutée')">+ Série 40×10</button>
+        </div>
+        <div class="card">
+          <h3>Photo console</h3>
+          <p>Sur tapis/rameur/elliptique : une photo à la fin pour valider les perfs et l’XP.</p>
+          <button class="btn" onclick="alert('Photo importée (exemple)')">Importer une photo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px">
+      <div>© <span id="y"></span> A‑Fit. Bouger. Gagner. Revenir.</div>
+      <div class="toggle">
+        Thème clair (expérimental)
+        <div class="switch" id="sw"><i></i></div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Démo leaderboard
+    const rows = [
+      {n:1, name:'Lina M.', machine:'Rameur 2k', week:'2025‑W40', xp:1240},
+      {n:2, name:'Yanis R.', machine:'Presse à cuisses', week:'2025‑W40', xp:1170},
+      {n:3, name:'Zoé P.', machine:'Tapis 5 km', week:'2025‑W40', xp:1100},
+      {n:4, name:'Noah B.', machine:'Tractions', week:'2025‑W40', xp:980},
+      {n:5, name:'Aya T.', machine:'Elliptique 30′', week:'2025‑W40', xp:930}
+    ];
+    const tb = document.querySelector('#leader tbody');
+    rows.forEach(r=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML = `<td><span class="rank">${r.n}</span></td><td>${r.name}</td><td>${r.machine}</td><td>${r.week}</td><td class="xp">${r.xp.toLocaleString('fr-FR')} XP</td>`;
+      tb.appendChild(tr);
+    });
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Thème clair expérimental (juste pour montrer la versatilité de la palette)
+    const sw = document.getElementById('sw');
+    sw.addEventListener('click', ()=>{
+      sw.classList.toggle('on');
+      const light = sw.classList.contains('on');
+      document.documentElement.style.setProperty('--bg', light ? '#f7f9ff' : '#0b1020');
+      document.documentElement.style.setProperty('--bg-2', light ? '#ffffff' : '#0e1429');
+      document.documentElement.style.setProperty('--ink', light ? '#0b1020' : '#ecf3ff');
+      document.documentElement.style.setProperty('--muted', light ? '#5c6680' : '#a9b7d6');
+      document.body.style.background = light
+        ? 'linear-gradient(180deg,#f7f9ff,#ffffff)'
+        : 'radial-gradient(1200px 800px at 10% -10%, rgba(73,225,168,.18), transparent 60%),\
+           radial-gradient(1000px 700px at 110% 10%, rgba(122,92,255,.16), transparent 60%),\
+           linear-gradient(180deg, #0b1020, #0e1429 38%, #0b1020 100%)';
+    });
+  </script>
+</body>
+</html>
